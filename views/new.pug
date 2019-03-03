@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  form(method="post", action="/transcriptions")
+    div
+      h5 原稿名
+      input(type="text" name="transcriptionName")
+    button(type="submit") 原稿をつくる
