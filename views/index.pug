@@ -1,26 +1,19 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  div
-    if user
-      div
-        a(href="/logout") #{user.username} をログアウト
-      div
-        a(href="/transcriptions/new") 予定を作る
-      - var hasTranscription = transcriptions
-      if hasTranscription
-        h3 あなたの作った原稿一覧
-        table.table
+  div.jumbotron.my-3
+    h1.display-4 発表練習くん
+    p.lead 発表練習くんは，GITHUBで認証する，発表練習用のアプリです
+  if user
+    div
+      a(href="/transcriptions/new").btn.btn-info 原稿をつくる
+      h3.my-3 あなたの作った原稿一覧
+      table.table
+        tr
+          th 原稿名
+          th 更新日時
+        each transcription in transcriptions
           tr
-            th 原稿名
-            th 更新日時
-          each transcription in transcriptions
-            tr
-              td
-                a(href=`/transcriptions/${transcription.transcriptionId}`) #{transcription.transcriptionName}
-              td #{transcription.updatedAt}
-    else
-      div
-        a(href="/login") ログイン
+            td
+              a(href=`/transcriptions/${transcription.transcriptionId}`) #{transcription.transcriptionName}
+            td  #{transcription.updatedAt}

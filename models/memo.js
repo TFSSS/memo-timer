@@ -23,6 +23,10 @@ const Memo = loader.database.define('memo', {
   time: {
     type: Sequelize.INTEGER,
     allowNull: false
+  },
+  order: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   }
 }, {
   freezeTableName: true,
@@ -33,5 +37,4 @@ const Memo = loader.database.define('memo', {
     }
   ]
 });
-
 module.exports = Memo;

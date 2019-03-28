@@ -29,5 +29,4 @@ const Transcription = loader.database.define('transcription', {
     }
   ]
 });
-
 module.exports = Transcription;

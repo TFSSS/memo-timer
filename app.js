@@ -12,13 +12,13 @@ var Transcription = require('./models/transcription');
 var Memo = require('./models/memo');
 
 User.sync().then(() => {
-  Transcription.belongsTo(User, {foreignKey: 'createdBy'});
-  Transcription.sync().then( () => {
-    Memo.belongsTo(User, {foreignKey: 'userId'});
-    Memo.belongsTo(Transcription, {foreignKey: 'transcriptionId'});
+  Transcription.belongsTo(User, {foreignKey: 'createdBy', targetKey: 'userId'});
+  Transcription.sync().then(() => {
+    Memo.belongsTo(Transcription, {foreignKey: 'transcriptionId', targetKey: 'transcriptionId'});
+  }).then(() => {
     Memo.sync();
+    console.log('memo sync');
   });
-  
 });
 
 var GitHubStrategy = require('passport-github2').Strategy;

@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1 メモの編集画面
+  form(method="post", action=`/transcriptions/${memo.transcriptionId}/edit/${memo.candidateId}`)
+    div.input-forms
+      table
+        tr
+          th 順番
+          th 時間
+          th 内容
+          br
+        tr
+          td
+            input(type="number" name="order" value=memo.order)
+          td
+            input(type="number" name="time" value=memo.time)
+          td
+            textarea(name="content") #{memo.content}
+          br
+      button(type="submit") この内容で編集する

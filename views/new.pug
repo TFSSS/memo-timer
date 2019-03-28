@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  form(method="post", action="/transcriptions")
-    div
-      h5 原稿名
-      input(type="text" name="transcriptionName")
-    button(type="submit") 原稿をつくる
+  form(method="post", action="/transcriptions").my-3
+    div.form-group
+      label(for="transcriptionName") 原稿名
+      input(type="text" name="transcriptionName")#transcriptionName.form-control
+    button(type="submit").btn.btn-info 原稿をつくる

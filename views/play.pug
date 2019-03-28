@@ -1,0 +1,11 @@
+extends layout
+block content
+  h4.my-3 再生画面
+  div.container
+    div.card.card-body
+      h3.text-center#time-area
+    div.card.card-body.text-center#content-area
+  div.container
+    button(type="button")#play.col-md-3.btn.btn-info 再生
+    button(type="button")#stop.col-md-4.btn.btn-danger 停止
+    script(src="/javascripts/bundle.js")

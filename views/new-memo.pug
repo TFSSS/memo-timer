@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  form(method="post", action=`/transcriptions/${transcriptionId}/edit/new`).my-3
+    div.form-group
+      label(for="order") 順番
+      input(type="number" name="order")#order.form-control
+    div.form-group
+      label(for="time") 時間(s)
+      input(type="number" name="time")#time.form-control
+    div.form-group
+      label(for="content") 内容
+      textarea(name="content")#content.form-control
+    button(type="submit").btn.btn-info 原稿をつくる

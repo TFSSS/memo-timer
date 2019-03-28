@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  h3.my-3 編集画面
+  div.input-forms
+    a(href=`/transcriptions/${transcriptionId}/edit/new`) メモを1つ追加する
+    table.table
+      tr
+        th 順番
+        th 時間
+        th 内容
+        th 編集画面へ
+        th 削除する
+        br
+      each memo in memos
+        tr
+          td #{memo.order}
+          td #{memo.time}
+          td #{memo.content}
+          td
+            form(method="get" action=`/transcriptions/${memo.transcriptionId}/edit/${memo.candidateId}`)
+              button(type="submit") 編集する
+          td
+            form(method="post" action=`/transcriptions/${memo.transcriptionId}/edit/${memo.candidateId}/delete`)
+              button(type="submit") 削除する
+          br

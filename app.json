@@ -1,0 +1,7 @@
+{
+  "name": "memo-timer",
+  "description": "発表練習くん",
+  "logo": "",
+  "keywords": ["node"],
+  "image": "heroku/nodejs"
+}
