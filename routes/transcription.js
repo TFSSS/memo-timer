@@ -12,7 +12,7 @@ const csrfProtection = csrf({cookie:true});
 /**
  * 原稿の新規作成画面
  */
-router.get('/new', authenticationEnsurer, (req, res, next) => {
+router.get('/new', authenticationEnsurer, csrfProtection, (req, res, next) => {
   res.render('new',{title: '新規作成', user: req.user });
 });
 
@@ -48,7 +48,7 @@ router.get('/:transcriptionId/edit', authenticationEnsurer, (req, res, next) => 
 /**
  * メモの新規作成画面
  */
-router.get('/:transcriptionId/edit/new', authenticationEnsurer, (req, res, next) => {
+router.get('/:transcriptionId/edit/new', authenticationEnsurer, csrfProtection, (req, res, next) => {
   const transcriptionId = req.params.transcriptionId;
   res.render('new-memo',{title: '新しいメモ', user: req.user, transcriptionId: transcriptionId});
 });
@@ -56,7 +56,7 @@ router.get('/:transcriptionId/edit/new', authenticationEnsurer, (req, res, next)
 /**
  * メモの編集画面を表示する
  */
-router.get('/:transcriptionId/edit/:candidateId', authenticationEnsurer, (req, res, next) => {
+router.get('/:transcriptionId/edit/:candidateId', authenticationEnsurer, csrfProtection, (req, res, next) => {
   const transcriptionId = req.params.transcriptionId;
   const candidateId = req.params.candidateId;
   Memo.findOne({
@@ -103,6 +103,27 @@ router.post('/', authenticationEnsurer, (req, res, next) => {
     res.redirect('/');
   });
 });
+
+
+/**
+ * 原稿を削除する時の処理
+ */
+router.post('/:transcriptionId/delete', authenticationEnsurer, (req, res, next) => {
+  const transcriptionId = req.params.transcriptionId;
+  Memo.destroy({
+    where:{
+      transcriptionId: transcriptionId
+    }
+  }).then(() => {
+    Transcription.destroy({
+      where: {
+        transcriptionId: transcriptionId
+      }
+    })
+  }).then(() => {
+    res.redirect('/');
+  });
+})
 
 /**
  * 新しいメモを作成した時の処理
@@ -206,7 +227,7 @@ router.post('/:transcriptionId/edit/:candidateId',(req, res, next)=> {
 });
 
 /**
- * 削除する時の処理
+ * メモを削除する時の処理
  */
 router.post('/:transcriptionId/edit/:candidateId/delete',(req, res, next) => {
   const transcriptionId = req.params.transcriptionId;

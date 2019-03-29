@@ -2,9 +2,11 @@ extends layout
 
 block content
   h4.my-3 原稿
-  p(style="white-space:pre;") 再生画面か編集画面へ
+  p(style="white-space:pre;") 編集か再生か削除
   div.container
     div.row
-      a(href=`/transcriptions/${transcriptionId}/edit`,role="button").btn.btn-info 編集画面へ
+      a(href=`/transcriptions/${transcriptionId}/edit`,role="button").btn.btn-info.my-2 編集画面へ
     div.row
-      a(href=`/transcriptions/${transcriptionId}/play`,role="button").btn.btn-info 再生画面へ
+      a(href=`/transcriptions/${transcriptionId}/play`,role="button").btn.btn-info.my-2 再生画面へ
+    form(method="post", action=`/transcriptions/${transcriptionId}/delete`).row
+      button(type="submit").btn.btn-danger.my-2 原稿を削除する
