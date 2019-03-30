@@ -3,6 +3,7 @@ extends layout
 block content
   h1 メモの編集画面
   form(method="post", action=`/transcriptions/${memo.transcriptionId}/edit/${memo.candidateId}`)
+    input(type="hidden" name="_csrf" value!=csrfToken)
     div.input-forms
       table
         tr

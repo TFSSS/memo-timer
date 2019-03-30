@@ -13,20 +13,20 @@ const csrfProtection = csrf({cookie:true});
  * 原稿の新規作成画面
  */
 router.get('/new', authenticationEnsurer, csrfProtection, (req, res, next) => {
-  res.render('new',{title: '新規作成', user: req.user });
+  res.render('new',{title: '新規作成', user: req.user, csrfToken: req.csrfToken() });
 });
 
 /**
  * 原稿の再生/編集画面
  */
-router.get('/:transcriptionId', authenticationEnsurer, (req, res, next) => {
+router.get('/:transcriptionId', authenticationEnsurer, csrfProtection, (req, res, next) => {
   res.render('transcription',{title: '原稿', user: req.user, transcriptionId: req.params.transcriptionId});
 });
 
 /**
  * 原稿の編集画面
  */
-router.get('/:transcriptionId/edit', authenticationEnsurer, (req, res, next) => {
+router.get('/:transcriptionId/edit', authenticationEnsurer, csrfProtection, (req, res, next) => {
   //編集画面は本人だけが開ける
   const transcriptionId = req.params.transcriptionId;
   Memo.findAll({
@@ -41,7 +41,7 @@ router.get('/:transcriptionId/edit', authenticationEnsurer, (req, res, next) => 
     }
     ,order:[["order","ASC"]]
   }).then((memos) => {
-    res.render('edit',{title: '編集', user: req.user,transcriptionId: transcriptionId, memos: memos});
+    res.render('edit',{title: '編集', user: req.user,transcriptionId: transcriptionId, memos: memos, csrfToken: req.csrfToken()});
   });
 });
 
@@ -50,7 +50,7 @@ router.get('/:transcriptionId/edit', authenticationEnsurer, (req, res, next) => 
  */
 router.get('/:transcriptionId/edit/new', authenticationEnsurer, csrfProtection, (req, res, next) => {
   const transcriptionId = req.params.transcriptionId;
-  res.render('new-memo',{title: '新しいメモ', user: req.user, transcriptionId: transcriptionId});
+  res.render('new-memo',{title: '新しいメモ', user: req.user, transcriptionId: transcriptionId, csrfToken: req.csrfToken()});
 });
 
 /**
@@ -62,27 +62,27 @@ router.get('/:transcriptionId/edit/:candidateId', authenticationEnsurer, csrfPro
   Memo.findOne({
     where: {candidateId: candidateId}
   }).then((memo) => {
-    res.render('edit-memo',{title: 'メモの編集', memo: memo});
+    res.render('edit-memo',{title: 'メモの編集', memo: memo, csrfToken: req.csrfToken()});
   });
 });
 
 /**
  * 発表原稿の再生画面を表示する
  */
-router.get('/:transcriptionId/play', authenticationEnsurer, (req, res, next) => {
+router.get('/:transcriptionId/play', authenticationEnsurer, csrfProtection, (req, res, next) => {
   const transcriptionId = req.params.transcriptionId;
 
   Memo.findAll({
     where: {transcriptionId: transcriptionId}
   }).then((memos) => {
-    res.render('play',{title: '再生', memos: memos}); 
+    res.render('play',{title: '再生', memos: memos, csrfToken: req.csrfToken()}); 
   });
 });
 
 /**
  * 新しい原稿を作成した時の処理
  */
-router.post('/', authenticationEnsurer, (req, res, next) => {
+router.post('/', authenticationEnsurer, csrfProtection, (req, res, next) => {
   const transcriptionId = uuid.v4();
   const candidateId = uuid.v4();
   const updatedAt = new Date();
@@ -108,7 +108,7 @@ router.post('/', authenticationEnsurer, (req, res, next) => {
 /**
  * 原稿を削除する時の処理
  */
-router.post('/:transcriptionId/delete', authenticationEnsurer, (req, res, next) => {
+router.post('/:transcriptionId/delete', authenticationEnsurer, csrfProtection, (req, res, next) => {
   const transcriptionId = req.params.transcriptionId;
   Memo.destroy({
     where:{
@@ -129,7 +129,7 @@ router.post('/:transcriptionId/delete', authenticationEnsurer, (req, res, next) 
  * 新しいメモを作成した時の処理
  *  TranscriptionのupdatedAtを更新し，新しいMemoを作成する
  */
-router.post('/:transcriptionId/edit/new', authenticationEnsurer, (req, res, next) => {
+router.post('/:transcriptionId/edit/new', authenticationEnsurer, csrfProtection, (req, res, next) => {
   const transcriptionId = req.params.transcriptionId;
   const content = req.body.content;
   const time = req.body.time;
@@ -177,7 +177,7 @@ router.post('/:transcriptionId/edit/new', authenticationEnsurer, (req, res, next
  * transcriptionのupdatedAtの更新
  * Memoの更新
  */
-router.post('/:transcriptionId/edit/:candidateId',(req, res, next)=> {
+router.post('/:transcriptionId/edit/:candidateId', authenticationEnsurer, csrfProtection, (req, res, next)=> {
   const transcriptionId = req.params.transcriptionId;
   const candidateId = req.params.candidateId;
   const updatedAt = new Date();
@@ -229,7 +229,7 @@ router.post('/:transcriptionId/edit/:candidateId',(req, res, next)=> {
 /**
  * メモを削除する時の処理
  */
-router.post('/:transcriptionId/edit/:candidateId/delete',(req, res, next) => {
+router.post('/:transcriptionId/edit/:candidateId/delete', authenticationEnsurer, csrfProtection, (req, res, next) => {
   const transcriptionId = req.params.transcriptionId;
   const candidateId = req.params.candidateId;
   const updatedAt = new Date();
@@ -260,7 +260,7 @@ router.post('/:transcriptionId/edit/:candidateId/delete',(req, res, next) => {
 });
 
 //原稿を再生する時の処理
-router.post('/:transcriptionId/play', (req, res, next) => {
+router.post('/:transcriptionId/play', authenticationEnsurer, (req, res, next) => {
   var transcriptionId = req.params.transcriptionId;
   Memo.findAll({
     where: {
