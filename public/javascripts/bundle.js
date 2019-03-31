@@ -172,11 +172,13 @@ function clock() {
   }
 
   if (n == contents.length) {
-    n = 0;
+    n = -1;
   }
 
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#time-area").text(countRemain);
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()("#content-area").text(contents[n]);
+  if (n >= 0) {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#time-area").text(countRemain + '/' + times[n]);
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#content-area").text(contents[n]);
+  } else {}
 }
 
 function start() {

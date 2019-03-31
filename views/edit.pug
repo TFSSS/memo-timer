@@ -3,6 +3,8 @@ extends layout
 block content
   h3.my-3 編集画面
   div.input-forms
+    a(href=`/transcriptions/${transcriptionId}`) 戻る
+    br
     a(href=`/transcriptions/${transcriptionId}/edit/new`) メモを1つ追加する
     table.table
       tr
@@ -19,9 +21,9 @@ block content
           td #{memo.content}
           td
             form(method="get" action=`/transcriptions/${memo.transcriptionId}/edit/${memo.candidateId}`)
-              button(type="submit") 編集する
+              button(type="submit").btn 編集する
           td
             form(method="post" action=`/transcriptions/${memo.transcriptionId}/edit/${memo.candidateId}/delete`)
               input(type="hidden" name="_csrf" value!=csrfToken)
-              button(type="submit") 削除する
+              button(type="submit").btn 削除する
           br

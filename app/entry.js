@@ -62,11 +62,15 @@ function clock(){
   }
 
   if(n == contents.length){
-    n = 0;
+    n = -1;
   }
 
-  $("#time-area").text(countRemain);
-  $("#content-area").text(contents[n]);
+  if(n>=0){
+    $("#time-area").text(countRemain + '/' + times[n]);
+    $("#content-area").text(contents[n]);
+  }else{
+    
+  }
 }
 
 function start(){
